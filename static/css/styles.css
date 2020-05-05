@@ -1,0 +1,218 @@
+body {
+    margin: 0 auto;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 16px;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-flow: wrap;
+    flex-direction: row;
+}
+
+p {
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    z-index: 1;
+    margin: auto;
+    display: block;
+    max-height: 94%;
+    max-width: 100%;
+}
+
+a img {
+    max-height: 100%;
+}
+
+img {
+    margin: auto;
+    display: block;
+    max-height: 94%;
+    max-width: 100%;
+}
+
+.left, .middle, .right {
+    float: left;
+    display: flex;
+    flex-direction: column;
+    width: 33%;
+    height: 100%;
+    min-height: 300px;
+    padding-left: .165%;
+    padding-right: .165%;
+    text-align: center;
+    overflow: hidden;
+}
+
+.left {
+    background-color:#DCDCDC;
+}
+
+.middle {
+    background-color:#c5c5c5;
+}
+
+.right {
+    background-color:#b4b4b4;
+}
+
+.input-form, .segmented-output, .text-output {
+    font-size: 1.25rem;
+    position: relative;
+    height: 100%;
+}
+
+.input-form.has-advanced-upload, .segmented-output.has-advanced-upload, .text-output.has-advanced-upload {
+    outline: 2px dashed #518e94;
+    outline-offset: -10px;
+    -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
+    transition: outline-offset .15s ease-in-out, background-color .15s linear;
+}
+
+.input {
+    position: relative;
+    top: 50%;
+    -webkit-transform: translateY( -50%);
+    transform: translateY(-50%);
+}
+
+.left.is-dragover {
+    background-color: #fff;
+}
+
+.input-form.is-dragover {
+    outline-offset: -20px;
+    outline-color: #c8dadf;
+}
+
+.dragndrop, .input-icon {
+    display: none;
+}
+
+.input-form.has-advanced-upload .dragndrop {
+    display: inline;
+}
+
+.input-form.has-advanced-upload .input-icon {
+    display: block;
+    margin-bottom: 40px;
+    fill: #92b0b3;
+    width: 100%;
+    height: 80px;
+}
+
+.input-form.is-uploading .input-form, .input-form.is-success .input-form, .input-form.is-error .input-form {
+    visibility: hidden;
+}
+
+.uploading, .error, .processing {
+    display: none;
+}
+
+.uploading, .processing {
+    font-style: italic;
+}
+
+.input-form.is-uploading .uploading, .input-form.is-error .error,
+.segmented-output.is-uploading .uploading, .segmented-output.is-error .error,
+.text-output.is-uploading .uploading, .text-output.is-error .error, .text-output.is-processing .processing
+{
+    display: block;
+    position: absolute;
+    top: 50%;
+    right: 0;
+    left: 0;
+    -webkit-transform: translateY( -50%);
+    transform: translateY( -50%);
+}
+
+.input-form.is-success, .segmented-output.is-success {
+    display: none;
+}
+
+.text-output {
+    overflow-y: scroll;
+}
+
+.scrollable-text-window {
+    position: absolute;
+    margin: 20px;
+    max-height: calc(100% - 40px);;
+    text-align: left;
+    overflow-y: auto;
+}
+
+.text-output.is-success .text-output.uploading, .text-output.is-success .text-output.processing, .text-output.is-success .text-output.error {
+    display: none;
+}
+
+.js .input-file {
+    position: absolute;
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    z-index: -1;
+}
+
+.js .input-file+label {
+    max-width: 80%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+    display: inline-block;
+    overflow: hidden;
+}
+
+.js .input-file+label:hover strong, .input-file:focus+label strong, .input-file.has-focus+label strong {
+    color: #39bfd3;
+}
+
+.js .input-file:focus+label, .js .input-file.has-focus+label, .js .segmented-output:focus+label, .js .segmented-output.has-focus+label{
+    outline: 1px dotted #000;
+    outline: -webkit-focus-ring-color auto 5px;
+}
+
+.input-button {
+    display: block;
+    padding: 8px 16px;
+    margin: 40px auto 0;
+    color: #e5edf1;
+    background-color: #39bfd3;
+    font-weight: 700;
+}
+
+.input-button:hover, .input-button:focus, .input-button:disabled {
+    background-color: #0f3c4b;
+}
+
+.input-button:disabled {
+    background-color: #bebebe;
+}
+
+/* Dynamically rearrange the app components for a better mobile experience */
+@media screen and (max-width: 800px) {
+    .left, .middle, .right {
+        height: 100%;
+        width: 100%;
+        min-height: 150vw;
+    }
+}
+
+/* Animate ellipses for our processing message */
+.processing:after {
+    display: inline-block;
+    animation: dotty steps(1,end) 1s infinite;
+    content: '';
+  }
+
+  @keyframes dotty {
+      0%   { content: ''; }
+      25%  { content: '.'; }
+      50%  { content: '..'; }
+      75%  { content: '...'; }
+      100% { content: ''; }
+  }
