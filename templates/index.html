@@ -7,7 +7,7 @@
     <body>
         <div class="left">
             <div>
-                <b>Your Image</b>
+                <b>Upload Your Image</b>
             </div>
             <form class="input-form" method="post" action="/segment" enctype="multipart/form-data">
                 <div class="input">
@@ -43,7 +43,9 @@
             </div>
         </div>
 
-        <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+        <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
         <script src="{{ url_for('static', filename='js/index.js') }}"></script>
     </body>
 </html>

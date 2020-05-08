@@ -4,7 +4,7 @@ import io
 import numpy
 import os
 
-from comic_book_reader import parseComicSpeechBubbles, segmentPage
+from comic_book_reader import parseComicSpeechBubbles, segmentPage, findSpeechBubbles
 from flask import Flask, jsonify, render_template, request, send_file
 from flask_restful import Api, Resource
 from werkzeug.utils import secure_filename
@@ -39,7 +39,8 @@ class SegmentPage(Resource):
         if file and allowed_file(file.filename):
             npimg = numpy.fromstring(file.read(), numpy.uint8)
             img = cv2.imdecode(npimg, cv2.IMREAD_COLOR)
-            segmentPage(img)
+            contours = findSpeechBubbles(img)
+            cv2.drawContours(img, contours, -1, (0, 255, 0), 3)
             _, buffer = cv2.imencode('.jpg', img)
             
             return send_file(

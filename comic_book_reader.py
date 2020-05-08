@@ -28,7 +28,7 @@ def adjust_gamma(image, gamma=1.0):
 
 # Comparison function for sorting contours
 def get_contour_precedence(contour, cols):
-    tolerance_factor = 150
+    tolerance_factor = 200
     origin = cv2.boundingRect(contour)
     return ((origin[1] // tolerance_factor) * tolerance_factor) * cols + origin[0]
 
@@ -36,25 +36,52 @@ def get_contour_precedence(contour, cols):
 def findSpeechBubbles(image):
     # Convert image to gray scale
     imageGray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    # Filter noise through blur
-    imageGrayBlur = cv2.GaussianBlur(imageGray,(3,3),0)
     # Recognizes rectangular/circular bubbles, struggles with dark colored bubbles 
-    binary = cv2.threshold(imageGrayBlur,235,255,cv2.THRESH_BINARY)[1]
-    # Find contours
-    contours = cv2.findContours(binary,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)[0]
+    binary = cv2.threshold(imageGray,225,255,cv2.THRESH_BINARY)[1]
+    # Find contours and document their heirarchy for later
+    contours, hierarchy = cv2.findContours(binary,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
+    contourMap = {}
     finalContourList = []
-    for contour in contours:
-        # Filter out speech bubble candidates with unreasonable size
-        if cv2.contourArea(contour) < 100000 and cv2.contourArea(contour) > 4000:
-            # Smooth out contours that were found
-            epsilon = 0.0025*cv2.arcLength(contour, True)
-            approximatedContour = cv2.approxPolyDP(contour, epsilon, True)
-            finalContourList.append(approximatedContour)
+
+    contourMap = filterContoursBySize(contours)
+    contourMap = filterContainingContours(contourMap, hierarchy)
 
     # Sort final contour list
+    finalContourList = list(contourMap.values())
     finalContourList.sort(key=lambda x:get_contour_precedence(x, binary.shape[1]))
 
     return finalContourList
+
+def filterContoursBySize(contours):
+    # We could pass this in and update it by reference, but I prefer this sort of 'immutable' handling.
+    contourMap = {}
+
+    for i in range(len(contours)):
+        # Filter out speech bubble candidates with unreasonable size
+        if cv2.contourArea(contours[i]) < 100000 and cv2.contourArea(contours[i]) > 4000:
+            # Smooth out contours that were found
+            epsilon = 0.0025*cv2.arcLength(contours[i], True)
+            approximatedContour = cv2.approxPolyDP(contours[i], epsilon, True)
+            contourMap[i] = approximatedContour
+
+    return contourMap
+
+# Sometimes the contour algorithm identifies entire panels, which can contain speech bubbles already
+#  identified causing us to parse them twice via OCR. This method attempts to remove contours that 
+#  contain other speech bubble candidate contours completely inside of them.
+def filterContainingContours(contourMap, hierarchy):
+    # I really wish there was a better way to do this than this O(n^2) removal of all parents in
+    #  the heirarchy of a contour, but with the number of contours found this is the only way I can
+    #  think of to do this.
+    for i in list(contourMap.keys()):
+        currentIndex = i
+        while hierarchy[0][currentIndex][3] > 0:
+            if hierarchy[0][currentIndex][3] in contourMap.keys():
+                contourMap.pop(hierarchy[0][currentIndex][3])
+            currentIndex = hierarchy[0][currentIndex][3]
+
+    # I'd prefer to handle this 'immutably' like above, but I'd rather not make an unnecessary copy of the dict.
+    return contourMap
 
 # Given a list of contours, return a list of cropped images based on the bounding rectangles of the contours
 def cropSpeechBubbles(image, contours, padding = 0):
@@ -82,7 +109,7 @@ def processScript(script):
 
     for char in script:
         # Comic books tend to be written in upper case, so we remove anything other than upper case chars
-        if char not in ' -QWERTYUIOPASDFGHJKLZXCVBNM,.?!""\'’':
+        if char not in ' -QWERTYUIOPASDFGHJKLZXCVBNM,.?!""\'’1234567890':
             script = script.replace(char,'')
 
     # This line removes "- " and concatenates words split on two lines
@@ -122,7 +149,7 @@ def segmentPage(image, shouldShowImage = False):
     contours = findSpeechBubbles(image)
     croppedImageList = cropSpeechBubbles(image, contours)
 
-    cv2.drawContours(image, contours, -1, (0, 255, 0), 3)
+    cv2.drawContours(image, contours, -1, (0, 0, 0), 2)
     if shouldShowImage:
         cv2.imshow('Speech Bubble Identification', image)
         cv2.waitKey(0)

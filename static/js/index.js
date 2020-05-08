@@ -29,7 +29,7 @@ var isAdvancedUpload = function () {
     return isAdvancedUpload
 }()
 
-// The drag and drop file upload logic
+// Setup the drag and drop file upload logic
 if (isAdvancedUpload) {
     $form.addClass(hasAdvancedUpload)
     $segmentedOutput.addClass(hasAdvancedUpload)
@@ -56,6 +56,20 @@ if (isAdvancedUpload) {
 } else {
     alert('Please consider switching to a modern browser for this app to function correctly.')
 }
+
+// Website intro popup
+const popUpString = 
+    "Welcome to my OCR web application for comic book pages! " + 
+    "<br><br>" +
+    "To get started, just upload a comic book page image file in the <b>Upload Pane</b> on the left. " + 
+    "<br><br>" +
+    "This app works best with traditional comics, specifically those with white speech bubbles in the " + 
+    "traditional round shape, but feel free to test any interesting cases you might have and see how the app behaves. " +
+    "<br><br>" +
+    "Here are some public domain samples to test with: " + 
+    "<br>" 
+addUIPopUp(popUpString)
+
 
 // This doesn't get called on the drag and drop feature, only when a user clicks the form
 $form.on('change', function (e) {
@@ -98,6 +112,7 @@ function submitSegmentRequest(formData) {
     })
         .then(response => {
             $form.removeClass(isUploading)
+            $segmentedOutput.removeClass(isUploading)
             if (response.status !== 200) {
                 $form.addClass(isError)
                 $segmentedOutput.addClass(isError)
@@ -218,4 +233,16 @@ function truncate(n, len) {
     }
     filename = filename.substr(0, len) + (n.length > len ? '[...]' : '')
     return n.includes(".") ? filename + '.' + ext : filename
+}
+
+function addUIPopUp(s) {
+    var $newDiv = $(document.createElement('div'))
+    $newDiv.html(s)
+    $newDiv.dialog({title: "Welcome!"})
+    // Close on click outside of popup
+    $('body').click(function(e) {
+        if (!$(e.target).closest($newDiv).length){
+            $newDiv.dialog('close');
+        }
+    });
 }
