@@ -66,8 +66,9 @@ const popUpString =
     "This app works best with traditional comics, specifically those with white speech bubbles in the " + 
     "traditional round shape, but feel free to test any interesting cases you might have and see how the app behaves. " +
     "<br><br>" +
-    "Here are some public domain samples to test with: " + 
-    "<br>" 
+    "Here are some free images provided by Comixology to test with: " + 
+    "<br>" +
+    "<a href=\"https://imgur.com/a/ORudvOW\">Imgur Link</a>"
 addUIPopUp(popUpString)
 
 

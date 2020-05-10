@@ -37,7 +37,7 @@ def findSpeechBubbles(image):
     # Convert image to gray scale
     imageGray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     # Recognizes rectangular/circular bubbles, struggles with dark colored bubbles 
-    binary = cv2.threshold(imageGray,225,255,cv2.THRESH_BINARY)[1]
+    binary = cv2.threshold(imageGray,235,255,cv2.THRESH_BINARY)[1]
     # Find contours and document their heirarchy for later
     contours, hierarchy = cv2.findContours(binary,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
     contourMap = {}
@@ -58,7 +58,7 @@ def filterContoursBySize(contours):
 
     for i in range(len(contours)):
         # Filter out speech bubble candidates with unreasonable size
-        if cv2.contourArea(contours[i]) < 100000 and cv2.contourArea(contours[i]) > 4000:
+        if cv2.contourArea(contours[i]) < 120000 and cv2.contourArea(contours[i]) > 4000:
             # Smooth out contours that were found
             epsilon = 0.0025*cv2.arcLength(contours[i], True)
             approximatedContour = cv2.approxPolyDP(contours[i], epsilon, True)
