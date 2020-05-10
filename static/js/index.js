@@ -68,7 +68,7 @@ const popUpString =
     "<br><br>" +
     "Here are some free images provided by Comixology to test with: " + 
     "<br>" +
-    "<a href=\"https://imgur.com/a/ORudvOW\">Imgur Link</a>"
+    "<a href=\"https://github.com/damishshah/comic-book-reader/tree/master/sample_images\">Sample Images</a>"
 addUIPopUp(popUpString)
 
 
