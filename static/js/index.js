@@ -63,11 +63,9 @@ const popUpString =
     "<br><br>" +
     "To get started, just upload a comic book page image file in the <b>Upload Pane</b> on the left. " + 
     "<br><br>" +
-    "This app works best with traditional comics, specifically those with white speech bubbles in the " + 
-    "traditional round shape, but feel free to test any interesting cases you might have and see how the app behaves. " +
-    "<br><br>" +
-    "Here are some free images provided by Comixology to test with: " + 
+    "See the code: <a href=\"https://github.com/damishshah/comic-book-reader\">GitHub</a>" +
     "<br>" +
+    "Here are some free images provided by Comixology to test with: " +
     "<a href=\"https://github.com/damishshah/comic-book-reader/tree/master/sample_images\">Sample Images</a>"
 addUIPopUp(popUpString)
 
