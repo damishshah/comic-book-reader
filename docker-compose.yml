@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  videochat:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: comic-book-reader
+    container_name: comic-book-reader
+    restart: unless-stopped
+    networks:
+      - shared-network
+
+networks:
+  shared-network:
+    external:
+      name: videochat-infrastructure_shared-network
