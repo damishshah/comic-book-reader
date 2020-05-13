@@ -11,6 +11,6 @@ RUN apt-get update \
     && pip install --upgrade pip \
     && pip install --no-cache-dir -r requirements.txt
 
-EXPOSE 8000
+EXPOSE 8080
 
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--timeout", "60", "--workers=2", "--threads=4", "--worker-class=gthread", "app"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8080", "--timeout", "60", "--workers=2", "--threads=4", "--worker-class=gthread", "app"]
