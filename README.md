@@ -1,8 +1,6 @@
 # Comic Book Page Reader
 
 ## Summary
-You can find the deployed app at: http://damishshah.com/comic-book-reader
-
 Python application to identify speech bubbles and read text from comic book pages. This project is mostly being used as a way to collect comic book text data to teach a separate machine learning algorithm to write comic book-esque speech.
 
 ## Technologies
