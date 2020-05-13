@@ -9,7 +9,7 @@ from flask import Flask, jsonify, render_template, request, send_file
 from flask_restful import Api, Resource
 from werkzeug.utils import secure_filename
 
-application = Flask(__name__)
+application = Flask(__name__, static_url_path="/comic-book-reader/static", static_folder="static")
 api = Api(application)
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
@@ -25,6 +25,9 @@ def allowed_file(filename):
 # We still use nginx at the host level to route traffic to different apps.
 @application.route('/')
 @application.route('/index')
+@application.route('/index/')
+@application.route('/comic-book-reader')
+@application.route('/comic-book-reader/')
 def index():
     return render_template('index.html', title='Damish\'s ComicBookReader')
 
