@@ -105,7 +105,7 @@ $form.on('submit', async function (e) {
 
 // Used to submit POST request to the /segment api to get a segmented version of the user image
 function submitSegmentRequest(formData) {
-    return fetch('/segment', {
+    return fetch('/comic-book-reader/segment', {
         method: 'POST',
         body: formData
     })
@@ -136,7 +136,7 @@ function submitSegmentRequest(formData) {
 function submitReadRequest(formData) {
     $textOutput.addClass(isProcessing).removeClass(isUploading)
 
-    return fetch('/read', {
+    return fetch('/comic-book-reader/read', {
         method: 'POST',
         body: formData
     })
