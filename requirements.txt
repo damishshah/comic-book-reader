@@ -1,5 +1,5 @@
 autocorrect==0.4.4
-Flask==1.1.1
+Flask==2.3.2
 Flask-RESTful==0.3.8
 gunicorn==20.0.4
 opencv-contrib-python-headless==4.2.0.32
